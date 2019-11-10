@@ -10,11 +10,13 @@
 
 .form-control label,
 .form-control input,
-.form-control button{
+.form-control button,
+.form-control textarea{
     display: block;
     margin: 1rem;
 }
-.form-control input{
+.form-control input,
+.form-control textarea{
     border: 1px solid #e4b724;
     font: inherit;
     border-radius: 2px;

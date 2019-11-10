@@ -6,6 +6,7 @@ const errorController = require('./controllers/error');
 const adminRoutes = require('./routers/admin');
 const shopRouter = require('./routers/shop');
 
+
 const app = express();
 
 app.engine('hbs', expressHBS({
