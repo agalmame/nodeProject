@@ -20,12 +20,19 @@ exports.postProduct = (req, res, next)=>{
 }
 
 exports.getProducts = (req,res,next)=>{
-    const products = Products.fetchAll();
-    res.render('admin/products',{
-        prods: products,
-        pageTitle: 'admin product', 
-        hasProducts: products.length >0,
-        activeAdminPro :true,
-        testing : false,
+    Products.fetchAll((prod)=>{
+        res.render('admin/products',{
+            prods: prod,
+            pageTitle: 'admin product', 
+            hasProducts: prod.length >0,
+        });
     });
+
+}
+
+exports.getTest = (req,res,next)=>{
+    res.render('admin/edit-product', {
+        testing: 'i am just testing this page',
+    });
+
 }

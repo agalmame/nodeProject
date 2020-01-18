@@ -6,7 +6,6 @@ const errorController = require('./controllers/error');
 const adminRoutes = require('./routers/admin');
 const shopRouter = require('./routers/shop');
 
-
 const app = express();
 
 app.engine('hbs', expressHBS({
@@ -20,7 +19,7 @@ app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin',adminRoutes);
 
@@ -28,4 +27,4 @@ app.use(shopRouter);
 
 app.use(errorController.get404Page);
 
-app.listen(3001);
+app.listen(3000);
