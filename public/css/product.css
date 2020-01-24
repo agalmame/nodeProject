@@ -21,6 +21,9 @@
     font: inherit;
     border-radius: 2px;
 }
+.centered{
+    text-align: center;
+}
 button{
     font: inherit;
     border: 1px solid #681168;

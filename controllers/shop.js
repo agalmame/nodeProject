@@ -1,25 +1,54 @@
 const Products = require('../models/product');
+const cart = require('../models/cart');
 
+exports.getProducts = (req, res, next) => {
+    Products.fetchAll(p => {
+        res.render('shop/product-list',{
+            prods: p,
+            pageTitle: 'Shop', 
+            path: '/', 
+            hasProducts: p.length > 0, 
+            activeProducts:true,
+    });
 
-exports.getProduct = (req, res, next) => {
-    const products = Products.fetchAll();
-    res.render('shop/product-list',{
-        prods: products,
-        pageTitle: 'Shop', 
-        path: '/', 
-        hasProducts: products.length > 0, 
-        activeProducts:true,
     });
     //res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
 };
 
-exports.getIndex = (req,res,next) => {
-    const products = Products.fetchAll();
-    res.render('shop/index',{
-        prods: products,
-        pageTitle: 'list product', 
-        activeShop:true, 
+exports.getProduct = (req,res,next) => {
+    let id = req.params.productID;
+    Products.fetchProduct(id, p => {
+        console.log(p);
+        res.render('shop/product-detail',{
+            pageTitle:'product',
+            activeProducts:true,
+            prod:p
+        })
+    })
+}
+
+exports.postCart=(req,res,next) => {
+    const idy = req.body.productID;
+    console.log(idy);
+    Products.fetchProduct(idy,(p) => {
+        cart.addProduct(idy ,p.price);
     });
+
+    res.render('shop/cart',{
+        activeCart:true,
+    });
+}
+
+exports.getIndex = (req,res,next) => {
+    Products.fetchAll( p => {
+        res.render('shop/index',{
+            prods: p,
+            pageTitle: 'list product', 
+            hasProducts: p.length>0, 
+            activeShop:true,  
+        });
+    });
+   
 }
 
 exports.getCart =  (req,res,next) => {

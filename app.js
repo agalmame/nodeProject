@@ -27,4 +27,4 @@ app.use(shopRouter);
 
 app.use(errorController.get404Page);
 
-app.listen(3000);
+app.listen(3010);

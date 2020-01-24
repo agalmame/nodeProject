@@ -1,7 +1,7 @@
 const Products = require('../models/product');
 
 exports.getAddProduct= (req, res, next)=>{
-    res.render('admin/add-product',{
+    res.render('admin/edit-product',{
         pageTitle: 'Add Product',
         path: '/admin/add-product',
         activeProduct:true
@@ -19,20 +19,26 @@ exports.postProduct = (req, res, next)=>{
     res.redirect('/admin/products');
 }
 
+exports.getEditProduct= (req, res, next)=>{
+    const edit = req.query.edit;
+    if(!edit){
+        return res.render('/');
+    }
+    res.render('admin/edit-product',{
+        pageTitle: 'Edit The Choosen Product',
+        path: '/admin/add-product',
+        editing: true,
+    })
+};
+
 exports.getProducts = (req,res,next)=>{
-    Products.fetchAll((prod)=>{
+    Products.fetchAll(prod=>{
         res.render('admin/products',{
             prods: prod,
-            pageTitle: 'admin product', 
+            pageTitle: 'admin products', 
+            activeAdminPro:true,
             hasProducts: prod.length >0,
         });
-    });
-
-}
-
-exports.getTest = (req,res,next)=>{
-    res.render('admin/edit-product', {
-        testing: 'i am just testing this page',
     });
 
 }
