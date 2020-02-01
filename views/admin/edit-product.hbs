@@ -1,13 +1,17 @@
 <form class="product-form" action={{path}} method='POST'>
     <div class="form-control">
         <label for='title'>Title</label>
-        <input id='title' type='text' name='title'>
+        <input id='title' type='text' value="{{#if editing  }}{{product.title}}{{/if}}" name='title'>
         <label for='imageUrl'>Image</label>
-        <input id='imageUrl' type='text' name='imageUrl'>
+        <input id='imageUrl' type='text' value="{{#if editing  }}{{product.imageUrl}}{{/if}}" name='imageUrl'>
         <label for='price'>Price</label>
-        <input id='price' type='number' step="0.01" name='price'>
+        <input id='price' type='number' step="0.01" value="{{#if editing  }}{{product.price}}{{/if}}" name='price'>
         <label for='description'>Description</label>
-        <textarea id='description' rows="5" name='description'></textarea>
-        <button type='submit'>Add Product</button>
+        <textarea id='description' rows="5"
+            name='description'>v{{#if editing  }}{{product.description}}{{/if}}</textarea>
+        {{#if editing}}
+        <input type='hidden'  name='productID' value='{{product.id}}'>
+        {{/if}}
+        <button type='submit'>{{#if editing}}Update Product {{else}}Add Product {{/if}} </button>
     </div>
 </form>

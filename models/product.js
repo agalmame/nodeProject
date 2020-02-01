@@ -1,58 +1,50 @@
-const fs = require('fs');
-const path = require('path');
+const db = require('../util/database');
+const cart = require('./cart');
 
-const products = [];
 
-module.exports = class Product{
 
-    constructor(title,imageUrl,description,price){
-        this.id = Math.random().toString();
+module.exports = class Product {
+
+    constructor(id, title, imageUrl, description, price) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;
 
- };
+    };
 
-    save(){
-        const p = path.join(
-            path.dirname(process.mainModule.filename),
-            'data',
-            'products.json'
-        );
+    save() {
 
-        fs.readFile(p, (err, fileContent)=>{
-            let products = [];
+        return db.execute('insert into products (title , imageUrl , description , price) value(?,?,?,?)'
+        ,[this.title ,this.imageUrl, this.description,this.price]
+        )
+
+    }
+
+    static fetchAll() {
+        return db.execute('select * from products');
+    }
+
+    static fetchProduct(id) {
+        return db.execute('select * from products where id = ? ',[id]);
+    }
+
+    static deleteProduct(id){
+        const variable = path.require('path');
+        const p = path.join(path.dirname(process.mainModule.filename),'data' , 'products.json');
+        fs.readFile(p,(err, content)=>{
             if(!err){
-                products = JSON.parse(fileContent);
-            }
-            products.push(this);
-            fs.writeFile(p,JSON.stringify(products),(err) => {
-                console.log(err);
-            })
-        });
-        
- }
-
-    static fetchAll(cb){
-       const p = path.join(path.dirname(process.mainModule.filename),'data','products.json');
-       fs.readFile(p,(err,content)=>{
-           if(err){
-               cb([])
-            } else cb(JSON.parse(content));
-       });
-
- }
-
-    static fetchProduct(id , cb){
-        const p = path.join(path.dirname(process.mainModule.filename),'data','products.json');
-        fs.readFile(p, (err,content)=>{
-            if(err){
-                console.log(err)
-            }else {
-                const prod =  JSON.parse(content).find(product=> product.id===id);
-                cb(prod);
-            }
+                const products= JSON.parse(content);
+                const product= products.find(p=> p.id===id);
+                const updatedProducts =products.filter(p=>p.id != id)
+                fs.writeFile(p,JSON.stringify(updatedProducts),(err)=>{
+                    console.log(err);
+                    if(!err){
+                        cart.deleteCartProduct(product.id,product.price);
+                    }
+                });
+            }else console.log(err+'no data yet'); 
         })
     }
 

@@ -1,0 +1,18 @@
+{{#if hasProducts}}
+
+<div>
+    <ul>
+        {{#each products}}
+        <li>
+            <p><b>{{this.product}}</b>: ({{this.qty}})</p>
+            <form action="/cart-delete-cart" method="POST">
+                <input type='hidden' value="{{this.id}}" name="productID">
+                <button type="submit" class="btn">Delete</button>
+            </form>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{else}}
+<h1>No Products found</h1>
+{{/if}}
