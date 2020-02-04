@@ -18,15 +18,17 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     let id = req.params.productID;
-    Products.fetchProduct(id).then(p => {
-        res.render('shop/product-detail', {
-            pageTitle: 'product',
-            activeProducts: true,
-            prod: p[0][0],
-        })
-    }).catch(err=>{
-        console.log(err);
-    })
+    Products.findAll({where:{id:id}})
+            .then(p => {
+                res.render('shop/product-detail', {
+                    pageTitle: 'product',
+                    activeProducts: true,
+                    prod: p[0],
+                })
+            })
+            .catch(err=>{
+                console.log(err);
+            })
 }
 
 exports.postCart = (req, res, next) => {

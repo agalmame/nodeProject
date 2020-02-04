@@ -1,76 +1,102 @@
-const Products = require('../models/product');
+const Product = require('../models/product');
 
-exports.getAddProduct= (req, res, next)=>{
-    res.render('admin/edit-product',{
+exports.getAddProduct = (req, res, next) => {
+    res.render('admin/edit-product', {
         pageTitle: 'Add Product',
         path: '/admin/add-product',
-        activeProduct:true
+        activeProduct: true
     })
 };
 
-exports.postProduct = (req, res, next)=>{
+exports.postProduct = (req, res, next) => {
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
-    const description  = req.body.description;
-    const product = new Products(null,title,imageUrl,description,price);
-
-    product.save().then(()=>{
-        res.redirect('/products');
-    }).catch(err=>{
-        console.log(err);
+    const description = req.body.description;
+    Product.create({
+        title: title,
+        imageUrl: imageUrl,
+        price: price,
+        description: description,
     })
+        .then(resp => {
+            res.redirect('/admin/products')
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
-exports.getEditProduct= (req, res, next)=>{
+exports.getEditProduct = (req, res, next) => {
     const edit = req.query.edit;
-    if(!edit){
+    if (!edit) {
         return res.redirect('/');
     }
     const id = req.params.productID;
-    Products.fetchProduct(id, pro=>{
-        if(!pro){
-            return res.redirect('/');
-        }
-        res.render('admin/edit-product',{
-            pageTitle: 'Edit The Choosen Product',
-            path: '/admin/edit-product',
-            editing: edit,
-            product: pro,
+    Product.findAll({where:{id:id}})
+        .then(pro => {
+            res.render('admin/edit-product', {
+                pageTitle: 'Edit The Choosen Product',
+                path: '/admin/edit-product',
+                editing: edit,
+                product: pro[0],
+            })
         })
-    })
-    
+        .catch(err=>{
+            console.log(err);
+        })
 };
 
-exports.editProduct = (req,res,next)=>{
+exports.editProduct = (req, res, next) => {
     const id = req.body.productID;
     const updatedTitle = req.body.title;
     const updatedImage = req.body.imageUrl;
     const updatedDescription = req.body.description;
     const updatedPrice = req.body.price;
-
-    const updatedProduct= new Products(id, updatedTitle, updatedImage, updatedDescription,updatedPrice);
-    console.log(updatedProduct);
-
-    updatedProduct.save();
-    return res.redirect('/');
-
-}
-
-exports.getProducts = (req,res,next)=>{
-    Products.fetchAll(prod=>{
-        res.render('admin/products',{
-            prods: prod,
-            pageTitle: 'admin products', 
-            activeAdminPro:true,
-            hasProducts: prod.length >0,
-        });
-    });
+    Product.findAll({where:{id:id}})
+        .then(p=>{
+            p[0].title = updatedTitle;
+            p[0].imageUrl = updatedImage;
+            p[0].description = updatedDescription;
+            p[0].price = updatedPrice;
+            return p[0].save();
+        })
+        .then(r=>{
+            console.log(r);
+            res.redirect('/admin/products')
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+   
 
 }
 
-exports.deleteProduct= (req,res,next)=>{
+exports.getProducts = (req, res, next) => {
+    Product.findAll()
+        .then(p => {
+            res.render('admin/products', {
+                prods: p,
+                pageTitle: 'admin products',
+                activeAdminPro: true,
+                hasProducts: p.length > 0,
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+
+}
+
+exports.deleteProduct = (req, res, next) => {
     const id = req.body.productID;
-    Products.deleteProduct(id);
-     res.redirect('/');
+    Product.destroy({where:{id:id}})
+        .then(resp=>{
+            console.log(resp);
+            res.redirect('/admin/products');
+        })
+        .catch(err=>{
+            console.log(err);
+        });
 }
