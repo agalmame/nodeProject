@@ -3,7 +3,7 @@ const path = require('path');
 const router = express.Router();
 const shopController = require('../controllers/shop');
 
-router.get('/', shopController.getIndex );
+router.get('/', shopController.getProducts );
 
 router.get('/cart',shopController.getCart);
 
@@ -16,6 +16,10 @@ router.get('/product/:productID', shopController.getProduct);
 router.get('/checkout',shopController.getCheckout);
 
 router.post('/cart-delete-cart',shopController.deleteCartProduct)
+
+router.get('/order',shopController.getOrders);
+
+router.post('/create-order',shopController.postOrder)
 
 
 

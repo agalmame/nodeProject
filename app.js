@@ -5,10 +5,16 @@ const expressHBS = require('express-handlebars');
 const errorController = require('./controllers/error');
 const adminRoutes = require('./routers/admin');
 const shopRouter = require('./routers/shop');
-const sequelize = require('./util/database');
-const Product = require('./models/product');
+const mongoConnect = require('./util/database');
+const auth = require('./routers/authentication');
 const User = require('./models/user');
+const session =require('express-session');
+const mongodbStore = require('connect-mongodb-session')(session);
 
+const store = new mongodbStore({
+    uri:'mongodb+srv://yassune:HCDre59ww2uD4YCo@node-shop-ykwpi.mongodb.net/shop',
+    collection:'session',
+})
 
 const app = express();
 
@@ -28,17 +34,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(path.dirname(process.mainModule.filename), 'public')));
 
-app.use((req,res,next)=>{
-    User.findAll({where:{id:1}})
-        .then((user)=>{
-            console.log('this is a user'+user[0])
-            req.user=user[0];
-            next();
-        })
-        .catch(err=>{
-            console.log(err);
-            next();
-        })
+app.use(session({secret:'my little secret',
+                 resave:false ,
+                saveUninitialized:false,
+                store:store,
+            }))
+
+app.use((req, res, next)=>{
+        // console.log(req.session.user.cart);
+        if(!req.session.user){
+            return next();
+        }
+        req.user =  new User(req.session.user.userName,req.session.user.email,req.session.user.cart,req.session.user._id);
         next();
 })
 
@@ -46,25 +53,11 @@ app.use('/admin', adminRoutes);
 
 app.use(shopRouter);
 
-app.use(errorController.get404Page);
+app.use(auth);
 
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+app.use(errorController.get404Page); 
 
-sequelize.sync()
-    .then((r) => {
-        return User.findAll({where:{id:1}});
-    })
-    .then(user => {
-        if (!user[0]) {
-            return User.create({
-                email: 'yassineagalmame@gmail.com',
-                name: 'yassine agalmame',
-            })
-        } else return user[0];
-    })
-    .then(user => {
-        app.listen(3000);
-    })
-    .catch(err => {
-        console.log(err);
-    })
+
+mongoConnect.mongoConnect(()=>{
+    app.listen(3011);
+})

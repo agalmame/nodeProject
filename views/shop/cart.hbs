@@ -4,13 +4,17 @@
     <ul>
         {{#each products}}
         <li>
-            <p><b>{{this.product}}</b>: ({{this.qty}})</p>
+            <p><b>{{this.title}}</b>: ({{this.quantity}})</p>
             <form action="/cart-delete-cart" method="POST">
-                <input type='hidden' value="{{this.id}}" name="productID">
+                <input type='hidden' value="{{this._id}}" name="productID">
                 <button type="submit" class="btn">Delete</button>
             </form>
         </li>
         {{/each}}
+        <hr>
+        <form action="/create-order" method="post">
+            <button type="submit" class="btn">Order</button>
+        </form>
     </ul>
 </div>
 {{else}}

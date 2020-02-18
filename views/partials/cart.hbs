@@ -1,4 +1,6 @@
 <form action="/cart" method="POST">
+{{#if isAuthenticated}}
     <button type="submit" class="btn">Add To Cart</button>
     <input type='hidden' value='{{id}}' name='productID'>
+{{/if}}
 </form>

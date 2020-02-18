@@ -1,0 +1,22 @@
+{{#if hasOrders}}
+
+<div>
+    <ul> 
+        {{#each Orders}}
+        <li>
+            <h4>{{this._id}}</h4>
+            <ul>
+            {{#each this.items}}
+                <li>
+                    <p><b>{{this.title}}</b>: ({{this.quantity}})</p>
+                </li>
+            {{/each}}
+            </ul>
+        </li>
+        <hr>
+        {{/each}}
+    </ul>
+</div>
+{{else}}
+<h1>No Order found</h1>
+{{/if}}

@@ -1,0 +1,16 @@
+<form class="login-form" action={{path}} method='POST'>
+    <div class="form-control">
+        <label for='email'>Email</label>
+        <input id='email' type='text' value="{{#if editing  }}{{product.title}}{{/if}}" name='email'>
+    </div>
+    <div class="form-control">
+        <label for='password'>Password</label>
+        <input id='password' type='password' name='password'>
+    </div>
+    <div class="form-control">
+        <label for='confirm-password'>Confirm Password</label>
+        <input id='confirm-password' type='password' name="confirm-password">
+    </div>
+    <button type='submit'>Sign up</button>
+    </div>
+</form>
