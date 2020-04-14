@@ -4,7 +4,7 @@ const MongoClient = mongodb.MongoClient;
 let db;
 
 const mongoConnect = callback => {
-    MongoClient.connect('mongodb+srv://yassune:HCDre59ww2uD4YCo@node-shop-ykwpi.mongodb.net/shop?retryWrites=true&w=majority', { useUnifiedTopology: true })
+    MongoClient.connect('mongodb+srv://yassune:'+process.env.pass+'@node-shop-ykwpi.mongodb.net/shop?retryWrites=true&w=majority', { useUnifiedTopology: true })
         .then(result => {
             db = result.db();
             // console.log(db)
