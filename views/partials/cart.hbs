@@ -2,5 +2,6 @@
 {{#if isAuthenticated}}
     <button type="submit" class="btn">Add To Cart</button>
     <input type='hidden' value='{{id}}' name='productID'>
+    <input type="hidden" value='{{hasToken}}' name="_csrf">
 {{/if}}
 </form>

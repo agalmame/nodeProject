@@ -1,7 +1,7 @@
-<form class="login-form" action={{path}} method='POST'>
+<form class="login-form" action='/signUp' method='POST'>
     <div class="form-control">
         <label for='email'>Email</label>
-        <input id='email' type='text' value="{{#if editing  }}{{product.title}}{{/if}}" name='email'>
+        <input id='email' type='text'name='email'>
     </div>
     <div class="form-control">
         <label for='password'>Password</label>
@@ -11,6 +11,7 @@
         <label for='confirm-password'>Confirm Password</label>
         <input id='confirm-password' type='password' name="confirm-password">
     </div>
+    <input type="hidden" value='{{hasToken}}' name="_csrf">
     <button type='submit'>Sign up</button>
     </div>
 </form>

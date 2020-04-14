@@ -119,17 +119,10 @@ class User {
   }
 
   static findUser(field) {
-    if (typeof field == "string") {
-      console.log('this is string')
-      return getDb()
-        .collection("user")
-        .findOne({ _id: new objectId(field) });
-    }else{
-      console.log('this is object')
+
       return getDb()
           .collection('user')
           .findOne(field)
-    }
   }
 }
 

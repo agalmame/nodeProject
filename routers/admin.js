@@ -2,9 +2,10 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 const adminController = require('../controllers/admin');
+const authCheck = require('../controllers/checkAuth');
 
 
-router.get('/add-product', adminController.getAddProduct);
+router.get('/add-product',authCheck , adminController.getAddProduct);
 
 router.get('/edit-product/:productID',adminController.getEditProduct);
 

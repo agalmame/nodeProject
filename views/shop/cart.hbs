@@ -7,12 +7,14 @@
             <p><b>{{this.title}}</b>: ({{this.quantity}})</p>
             <form action="/cart-delete-cart" method="POST">
                 <input type='hidden' value="{{this._id}}" name="productID">
+                <input type="hidden" value='{{hasToken}}' name="_csrf">
                 <button type="submit" class="btn">Delete</button>
             </form>
         </li>
         {{/each}}
         <hr>
         <form action="/create-order" method="post">
+            <input type="hidden" value='{{hasToken}}' name="_csrf">
             <button type="submit" class="btn">Order</button>
         </form>
     </ul>

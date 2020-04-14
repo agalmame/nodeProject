@@ -12,6 +12,7 @@
         {{#if editing}}
         <input type='hidden'  name='productID' value='{{product._id}}'>
         {{/if}}
+        <input type="hidden" value='{{hasToken}}' name="_csrf">
         <button type='submit'>{{#if editing}}Update Product {{else}}Add Product {{/if}} </button>
     </div>
 </form>

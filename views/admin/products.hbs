@@ -15,6 +15,7 @@
         <div class="card__actions">
             <a href="edit-product/{{this._id}}?edit=true" class="btn">Edit</a>
             <form action="delete-product" method="POST">
+                <input type="hidden" value='{{hasToken}}' name="_csrf">
                 <button class="btn" type="submit">Delete</button>
                 <input type="hidden" value="{{this._id}}" name="productID">
             </form>

@@ -22,6 +22,7 @@ class Products {
         .collection("products")
         .insertOne(this);
     }
+
     return op;
   }
 
@@ -33,23 +34,23 @@ class Products {
   }
 
   static findProduct(id) {
+
     return getDb()
       .collection("products")
-      .findOne({ _id: new mongodb.ObjectId(id) });
-
-    // .then(p => {
-    //     console.log("found");
-    // return p;
-    // })
-    // .catch(err => {
-    //     console.log(err);
-    // })
+      .findOne({ _id: new mongodb.ObjectId(id) })
+      .then(p => {
+        console.log("found");
+        return p;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   static deleteProduct(id) {
     return getDb()
-            .collection("products")
-            .deleteOne({ _id: new mongodb.ObjectId(id) })
+      .collection("products")
+      .deleteOne({ _id: new mongodb.ObjectId(id) });
   }
 }
 

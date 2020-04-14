@@ -1,7 +1,8 @@
-<form class="login-form" action={{path}} method='POST'>
+<form class="login-form" action='/login' method='POST'>
+    <input type="hidden" value='{{hasToken}}' name="_csrf">
     <div class="form-control">
         <label for='email'>Email</label>
-        <input id='email' type='text' value="{{#if editing  }}{{product.title}}{{/if}}" name='email'>
+        <input id='email' type='text' name='email'>
     </div>
     <div class="form-control">
         <label for='password'>Password</label>

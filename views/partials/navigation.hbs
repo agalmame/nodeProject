@@ -24,6 +24,7 @@
         </li>
         <li class="main-header__item">
             <form action="/logout" method="post">
+                <input type="hidden" value='{{hasToken}}' name="_csrf">
                 <button type="submit">Logout</button>
             </form>
         </li> 
